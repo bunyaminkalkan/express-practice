@@ -5,7 +5,7 @@ services:
     container_name: couchbase
     image: couchbase:latest
     ports:
-      - "5091-5096:8091-8096" # UI ports
+      - "8091-8096:8091-8096" # UI ports
       - "11210-11211:11210-11211" # Engine ports
     environment:
       COUCHBASE_ADMINISTRATOR_USERNAME: ${DB_USERNAME}
@@ -21,12 +21,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    environment:
-      DB_CONN_STR: ${DB_CONN_STR}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_BUCKET_NAME: ${DB_BUCKET_NAME}
-      APP_PORT: ${APP_PORT}
     depends_on:
       - couchbase
 

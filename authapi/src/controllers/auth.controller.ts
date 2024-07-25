@@ -3,18 +3,6 @@ import { connectToDatabase } from "../db/connection";
 import { User } from "../models/user.model";
 import { Collection } from "couchbase";
 
-async function getUsersCollection(): Promise<Collection> {
-    const dbConnection = await connectToDatabase();
-    return dbConnection.usersCollection;
-}
-
-async function getUsersCount(collection: Collection): Promise<number> {
-    const queryResult = await collection.cluster.query(
-        `SELECT COUNT(*) AS count FROM \`authbucket\`.\`auth\`.\`users\`;`
-    );
-    const count = queryResult.rows[0].count;
-    return count;
-}
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -45,4 +33,17 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
 
     const { username, password } = req.body;
 
+}
+
+const getUsersCollection = async (): Promise<Collection> => {
+    const dbConnection = await connectToDatabase();
+    return dbConnection.usersCollection;
+}
+
+const getUsersCount = async (collection: Collection): Promise<number> => {
+    const queryResult = await collection.cluster.query(
+        `SELECT COUNT(*) AS count FROM \`authbucket\`.\`auth\`.\`users\`;`
+    );
+    const count = queryResult.rows[0].count;
+    return count;
 }
